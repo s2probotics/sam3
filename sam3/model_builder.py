@@ -5,7 +5,8 @@
 import os
 from typing import Optional
 
-import pkg_resources
+# import pkg_resources
+from importlib.resources import files, as_file
 import torch
 import torch.nn as nn
 from huggingface_hub import hf_hub_download
@@ -596,9 +597,15 @@ def build_sam3_image_model(
         A SAM3 image model
     """
     if bpe_path is None:
-        bpe_path = pkg_resources.resource_filename(
-            "sam3", "assets/bpe_simple_vocab_16e6.txt.gz"
-        )
+        # bpe_path = pkg_resources.resource_filename(
+        #     "sam3", "assets/bpe_simple_vocab_16e6.txt.gz"
+        # )
+
+        resource_path = files("sam3").joinpath("sam3/assets/bpe_simple_vocab_16e6.txt.gz")
+
+        # Extract the temporary or permanent system path safely
+        with as_file(resource_path) as path:
+            bpe_path = str(path)
 
     # Create visual components
     compile_mode = "default" if compile else None
@@ -695,9 +702,15 @@ def build_sam3_video_model(
         Sam3VideoInferenceWithInstanceInteractivity: The instantiated dense tracking model
     """
     if bpe_path is None:
-        bpe_path = pkg_resources.resource_filename(
-            "sam3", "assets/bpe_simple_vocab_16e6.txt.gz"
-        )
+        # bpe_path = pkg_resources.resource_filename(
+        #     "sam3", "assets/bpe_simple_vocab_16e6.txt.gz"
+        # )
+
+        resource_path = files("sam3").joinpath("sam3/assets/bpe_simple_vocab_16e6.txt.gz")
+
+        # Extract the temporary or permanent system path safely
+        with as_file(resource_path) as path:
+            bpe_path = str(path)
 
     # Build Tracker module
     tracker = build_tracker(apply_temporal_disambiguation=apply_temporal_disambiguation)
@@ -1105,9 +1118,15 @@ def build_sam3_multiplex_video_predictor(
         Sam3MultiplexVideoPredictor: The fully-initialized predictor
     """
     if bpe_path is None:
-        bpe_path = pkg_resources.resource_filename(
-            "sam3", "assets/bpe_simple_vocab_16e6.txt.gz"
-        )
+        # bpe_path = pkg_resources.resource_filename(
+        #     "sam3", "assets/bpe_simple_vocab_16e6.txt.gz"
+        # )
+
+        resource_path = files("sam3").joinpath("sam3/assets/bpe_simple_vocab_16e6.txt.gz")
+
+        # Extract the temporary or permanent system path safely
+        with as_file(resource_path) as path:
+            bpe_path = str(path)
 
     from sam3.model.sam3_multiplex_base import Sam3MultiplexPredictorWrapper
     from sam3.model.sam3_multiplex_detector import Sam3MultiplexDetector
